@@ -11,7 +11,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Table(name = "usuarios")
+@Entity(name = "usuarios")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -33,11 +33,13 @@ public class Usuario {
     private String senha;
 
     @CreationTimestamp
+    @Column(name = "usuario_dh_cad")
     private LocalDateTime dataHoraCriacao;
 
     @UpdateTimestamp
+    @Column(name = "usuario_dh_ead")
     private LocalDateTime dataHoraEdicao;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contatos")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
     private Contato[] contatos;
 }

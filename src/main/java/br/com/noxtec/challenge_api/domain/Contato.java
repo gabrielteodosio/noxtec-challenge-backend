@@ -11,7 +11,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Table(name = "contatos")
+@Entity(name = "contatos")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -42,9 +42,11 @@ public class Contato {
     private Character ativo;
 
     @CreationTimestamp
+    @Column(name = "contato_dh_cad")
     private LocalDateTime dataHoraCriacao;
 
     @UpdateTimestamp
+    @Column(name = "contato_dh_ead")
     private LocalDateTime dataHoraEdicao;
 
     @ManyToOne
