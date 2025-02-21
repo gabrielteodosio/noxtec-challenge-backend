@@ -26,7 +26,7 @@ public class Contato {
     private UUID id;
 
     @Column(name = "contato_nome", length = 100)
-    private String name;
+    private String nome;
 
     @Column(name = "contato_email")
     private String email;
