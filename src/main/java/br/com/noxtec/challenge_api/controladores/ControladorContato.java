@@ -24,9 +24,9 @@ public class ControladorContato {
     private ServicoUsuario servicoUsuario;
 
     @GetMapping
-    public ResponseEntity<List<ContatoResponseDTO>> listarContatos(@RequestParam(defaultValue = "0", required = false) int pagina,
-                                                                   @RequestParam(defaultValue = "10", required = false) int tamanho,
-                                                                   @PathVariable("usuarioId") UUID usuarioId) {
+    public ResponseEntity<List<ContatoResponseDTO>> listar(@RequestParam(defaultValue = "0", required = false) int pagina,
+                                                           @RequestParam(defaultValue = "10", required = false) int tamanho,
+                                                           @PathVariable("usuarioId") UUID usuarioId) {
         List<ContatoResponseDTO> contatos = this.servicoContato.listarContatosPorUsusario(pagina, tamanho, usuarioId);
         return ResponseEntity.ok(contatos);
     }
@@ -67,5 +67,49 @@ public class ControladorContato {
                 novoContato.getFavorito(), novoContato.getAtivo(),
                 novoContato.getDataHoraCriacao(), novoContato.getDataHoraEdicao());
         return ResponseEntity.status(201).body(contatoResponseDTO);
+    }
+
+    @PutMapping("/{contatoId}")
+    public ResponseEntity<ContatoResponseDTO> atualizarViaJSON(@RequestBody ContatoRequestDTO body,
+                                                               @PathVariable("contatoId") UUID contatoId) {
+        Contato contatoAtualizado = this.servicoContato.atualizarContato(contatoId, body);
+
+        ContatoResponseDTO contatoResponseDTO = new ContatoResponseDTO(contatoAtualizado.getId(),
+                contatoAtualizado.getNome(), contatoAtualizado.getEmail(),
+                contatoAtualizado.getCelular(), contatoAtualizado.getTelefone(),
+                contatoAtualizado.getFavorito(), contatoAtualizado.getAtivo(),
+                contatoAtualizado.getDataHoraCriacao(), contatoAtualizado.getDataHoraEdicao());
+        return ResponseEntity.status(200).body(contatoResponseDTO);
+    }
+
+    @PutMapping(value = "/{contatoId}", consumes = "multipart/form-data")
+    public ResponseEntity<ContatoResponseDTO> atualizarViaJSON(@RequestParam(value = "nome", required = false) String nome,
+                                                               @RequestParam(value = "email", required = false) String email,
+                                                               @RequestParam(value = "celular", required = false) String celular,
+                                                               @RequestParam(value = "telefone", required = false) String telefone,
+                                                               @RequestParam(value = "favorito", required = false) Character favorito,
+                                                               @RequestParam(value = "ativo", required = false) Character ativo,
+                                                               @PathVariable(value = "contatoId") UUID contatoId) {
+        ContatoRequestDTO contatoRequestDTO = new ContatoRequestDTO(nome, email, celular, telefone, favorito, ativo, null);
+        Contato contatoAtualizado = this.servicoContato.atualizarContato(contatoId, contatoRequestDTO);
+
+        ContatoResponseDTO contatoResponseDTO = new ContatoResponseDTO(contatoAtualizado.getId(),
+                contatoAtualizado.getNome(), contatoAtualizado.getEmail(),
+                contatoAtualizado.getCelular(), contatoAtualizado.getTelefone(),
+                contatoAtualizado.getFavorito(), contatoAtualizado.getAtivo(),
+                contatoAtualizado.getDataHoraCriacao(), contatoAtualizado.getDataHoraEdicao());
+        return ResponseEntity.status(200).body(contatoResponseDTO);
+    }
+
+    @DeleteMapping("/{contatoId}")
+    public ResponseEntity<ContatoResponseDTO> excluir(@PathVariable("contatoId") UUID contatoId) {
+        Contato contatoExcluido = this.servicoContato.apagarContatoPorId(contatoId);
+
+        ContatoResponseDTO contatoResponseDTO = new ContatoResponseDTO(contatoExcluido.getId(),
+                contatoExcluido.getNome(), contatoExcluido.getEmail(),
+                contatoExcluido.getCelular(), contatoExcluido.getTelefone(),
+                contatoExcluido.getFavorito(), contatoExcluido.getAtivo(),
+                contatoExcluido.getDataHoraCriacao(), contatoExcluido.getDataHoraEdicao());
+        return ResponseEntity.status(200).body(contatoResponseDTO);
     }
 }

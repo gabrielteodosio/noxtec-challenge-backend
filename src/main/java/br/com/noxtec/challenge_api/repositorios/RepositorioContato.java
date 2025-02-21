@@ -7,9 +7,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface RepositorioContato extends JpaRepository<Contato, UUID> {
+
+    @Query("SELECT u from Contato u WHERE u.id = :contatoId")
+    Optional<Contato> buscarContatoPorId(@Param("contatoId") UUID contatoId);
 
     @Query("SELECT c FROM Contato c WHERE c.usuario.id = :usuarioId")
     Page<Contato> findContatosByUsuario(Pageable paginacao,

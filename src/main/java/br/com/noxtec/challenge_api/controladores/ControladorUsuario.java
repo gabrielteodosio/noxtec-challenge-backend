@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
@@ -44,5 +45,40 @@ public class ControladorUsuario {
                 novoUsuario.getNome(), novoUsuario.getEmail(),
                 novoUsuario.getDataHoraCriacao(), novoUsuario.getDataHoraEdicao());
         return ResponseEntity.status(201).body(usuarioResponseDTO);
+    }
+
+    @PutMapping("/{usuarioId}")
+    public ResponseEntity<UsuarioResponseDTO> atualizarViaJSON(@RequestBody UsuarioRequestDTO body,
+                                                               @PathVariable("usuarioId") UUID usuarioId) {
+        Usuario usuarioAtualizado = this.servicoUsuario.atualizarUsuario(usuarioId, body);
+
+        UsuarioResponseDTO usuarioResponseDTO = new UsuarioResponseDTO(usuarioAtualizado.getId(),
+                usuarioAtualizado.getNome(), usuarioAtualizado.getEmail(),
+                usuarioAtualizado.getDataHoraCriacao(), usuarioAtualizado.getDataHoraEdicao());
+        return ResponseEntity.status(200).body(usuarioResponseDTO);
+    }
+
+    @PutMapping(value = "/{usuarioId}", consumes = "multipart/form-data")
+    public ResponseEntity<UsuarioResponseDTO> atualizarViaForm(@RequestParam("nome") String nome,
+                                                               @RequestParam("email") String email,
+                                                               @RequestParam("senha") String senha,
+                                                               @PathVariable("usuarioId") UUID usuarioId) {
+        UsuarioRequestDTO usuarioRequestDTO = new UsuarioRequestDTO(nome, email, senha);
+        Usuario usuarioAtualizado = this.servicoUsuario.atualizarUsuario(usuarioId, usuarioRequestDTO);
+
+        UsuarioResponseDTO usuarioResponseDTO = new UsuarioResponseDTO(usuarioAtualizado.getId(),
+                usuarioAtualizado.getNome(), usuarioAtualizado.getEmail(),
+                usuarioAtualizado.getDataHoraCriacao(), usuarioAtualizado.getDataHoraEdicao());
+        return ResponseEntity.status(200).body(usuarioResponseDTO);
+    }
+
+    @DeleteMapping("/{usuarioId}")
+    public ResponseEntity<UsuarioResponseDTO> excluir(@PathVariable("usuarioId") UUID usuarioId) {
+        Usuario usuarioExcluido = this.servicoUsuario.apagarUsuarioPorId(usuarioId);
+
+        UsuarioResponseDTO usuarioResponseDTO = new UsuarioResponseDTO(usuarioExcluido.getId(),
+                usuarioExcluido.getNome(), usuarioExcluido.getEmail(),
+                usuarioExcluido.getDataHoraCriacao(), usuarioExcluido.getDataHoraEdicao());
+        return ResponseEntity.status(200).body(usuarioResponseDTO);
     }
 }

@@ -48,4 +48,24 @@ public class ServicoUsuario {
                 usuario.getDataHoraCriacao(), usuario.getDataHoraEdicao()
         )).stream().toList();
     }
+
+    public Usuario atualizarUsuario(UUID usuarioId, UsuarioRequestDTO dados) {
+        Usuario usuario = this.buscarUsuarioPorId(usuarioId);
+
+        if (usuario != null) {
+            usuario.setNome(dados.nome() != null ? dados.nome() : usuario.getNome());
+            usuario.setEmail(dados.email() != null ? dados.email() : usuario.getEmail());
+            usuario.setSenha(dados.senha() != null ? dados.senha() : usuario.getSenha());
+
+            this.repositorioUsuario.save(usuario);
+        }
+
+        return usuario;
+    }
+
+    public Usuario apagarUsuarioPorId(UUID userId) {
+        Usuario usuario = this.buscarUsuarioPorId(userId);
+        this.repositorioUsuario.delete(usuario);
+        return usuario;
+    }
 }

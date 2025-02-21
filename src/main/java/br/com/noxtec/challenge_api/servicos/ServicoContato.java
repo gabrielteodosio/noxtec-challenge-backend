@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -19,6 +20,11 @@ public class ServicoContato {
 
     @Autowired
     private RepositorioContato repositorioContato;
+
+    public Contato buscarContatoPorId(UUID contatoId) {
+        Optional<Contato> optionalUsuario = this.repositorioContato.buscarContatoPorId(contatoId);
+        return optionalUsuario.orElse(null);
+    }
 
     public Contato criarContato(ContatoRequestDTO dados) {
         Contato novoContato = new Contato();
@@ -58,5 +64,28 @@ public class ServicoContato {
                 contato.getFavorito(), contato.getAtivo(),
                 contato.getDataHoraCriacao(), contato.getDataHoraEdicao()
         )).stream().toList();
+    }
+
+    public Contato atualizarContato(UUID contatoId, ContatoRequestDTO dados) {
+        Contato contato = this.buscarContatoPorId(contatoId);
+
+        if (contato != null) {
+            contato.setNome(dados.nome() != null ? dados.nome() : contato.getNome());
+            contato.setEmail(dados.email() != null ? dados.email() : contato.getEmail());
+            contato.setCelular(dados.celular() != null ? dados.celular() : contato.getCelular());
+            contato.setTelefone(dados.telefone() != null ? dados.telefone() : contato.getTelefone());
+            contato.setFavorito(dados.favorito() != null ? dados.favorito() : contato.getFavorito());
+            contato.setAtivo(dados.ativo() != null ? dados.ativo() : contato.getAtivo());
+
+            this.repositorioContato.save(contato);
+        }
+
+        return contato;
+    }
+
+    public Contato apagarContatoPorId(UUID contatoId) {
+        Contato contato = this.buscarContatoPorId(contatoId);
+        this.repositorioContato.delete(contato);
+        return contato;
     }
 }
