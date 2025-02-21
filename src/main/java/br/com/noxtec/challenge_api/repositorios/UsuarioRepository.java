@@ -1,6 +1,6 @@
-package br.com.noxtec.challenge_api.repositories;
+package br.com.noxtec.challenge_api.repositorios;
 
-import br.com.noxtec.challenge_api.domain.Usuario;
+import br.com.noxtec.challenge_api.dominio.usuario.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

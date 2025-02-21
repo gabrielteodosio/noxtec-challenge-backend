@@ -1,5 +1,6 @@
-package br.com.noxtec.challenge_api.domain;
+package br.com.noxtec.challenge_api.dominio.contato;
 
+import br.com.noxtec.challenge_api.dominio.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
