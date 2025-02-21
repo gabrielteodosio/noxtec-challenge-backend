@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface RepositorioContato extends JpaRepository<Contato, UUID> {
 
     @Query("SELECT c FROM Contato c WHERE c.usuario.id = :usuarioId")
-    public Page<Contato> findContatosByUsuario(Pageable paginacao,
-                                               @Param("usuarioId") UUID usuarioId);
+    Page<Contato> findContatosByUsuario(Pageable paginacao,
+                                        @Param("usuarioId") UUID usuarioId);
 
 }
