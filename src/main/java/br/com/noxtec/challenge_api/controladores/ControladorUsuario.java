@@ -35,8 +35,8 @@ public class ControladorUsuario {
 
     @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<UsuarioResponseDTO> criarViaForm(@RequestParam("nome") String nome,
-                                                @RequestParam("email") String email,
-                                                @RequestParam("senha") String senha) {
+                                                           @RequestParam("email") String email,
+                                                           @RequestParam("senha") String senha) {
         UsuarioRequestDTO usuarioRequestDTO = new UsuarioRequestDTO(nome, email, senha);
         Usuario novoUsuario = this.servicoUsuario.criarUsuario(usuarioRequestDTO);
 
