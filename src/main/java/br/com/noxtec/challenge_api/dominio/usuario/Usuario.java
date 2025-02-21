@@ -41,7 +41,4 @@ public class Usuario {
     @UpdateTimestamp
     @Column(name = "usuario_dh_ead")
     private LocalDateTime dataHoraEdicao;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
-    private Contato[] contatos;
 }
