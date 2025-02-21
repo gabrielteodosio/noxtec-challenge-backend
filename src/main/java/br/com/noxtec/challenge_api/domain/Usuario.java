@@ -11,7 +11,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity(name = "usuarios")
+@Entity
+@Table(name = "usuarios")
 @Getter
 @Setter
 @NoArgsConstructor
