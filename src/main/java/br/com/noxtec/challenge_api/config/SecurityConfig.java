@@ -45,7 +45,8 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/login", "/api/users").permitAll() // Rotas públicas
+                        .requestMatchers("/api/auth/login", "/api/users/**").permitAll() // Rotas
+                        // públicas
                         .requestMatchers("/admin/**").hasRole(ADMIN.name())
                         .requestMatchers("/api/contacts").hasAuthority(LISTAR_CONTATOS.name())
                         .requestMatchers("/api/contacts").hasAuthority(CRIAR_CONTATO.name())
