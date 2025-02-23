@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public interface RepositorioContato extends JpaRepository<Contato, UUID> {
 
-    @Query("SELECT u from Contato u WHERE u.id = :contatoId")
+    @Query("SELECT c from Contato c WHERE c.id = :contatoId")
     Optional<Contato> buscarContatoPorId(@Param("contatoId") UUID contatoId);
 
     @Query("SELECT c FROM Contato c WHERE c.usuario.id = :usuarioId")
