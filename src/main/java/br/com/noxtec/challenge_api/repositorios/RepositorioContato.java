@@ -15,8 +15,7 @@ public interface RepositorioContato extends JpaRepository<Contato, UUID> {
     @Query("SELECT c from Contato c WHERE c.id = :contatoId")
     Optional<Contato> buscarContatoPorId(@Param("contatoId") UUID contatoId);
 
-    @Query("SELECT c FROM Contato c WHERE c.usuario.id = :usuarioId")
-    Page<Contato> findContatosByUsuario(Pageable paginacao,
-                                        @Param("usuarioId") UUID usuarioId);
+    @Query("SELECT c FROM Contato c JOIN c.usuario u WHERE c.usuario.email = :usuarioEmail")
+    Page<Contato> findContatosByUsuario(Pageable paginacao, @Param("usuarioEmail") String usuarioEmail);
 
 }
