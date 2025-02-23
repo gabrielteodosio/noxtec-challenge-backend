@@ -45,13 +45,16 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/login", "/api/users/**").permitAll() // Rotas
-                        // públicas
+                        // Rotas públicas
+                        .requestMatchers("/api/auth/login", "/api/users/**").permitAll()
+                        // Rotas de admin
                         .requestMatchers("/admin/**").hasRole(ADMIN.name())
+                        // Rotas de contato
                         .requestMatchers("/api/contacts").hasAuthority(LISTAR_CONTATOS.name())
                         .requestMatchers("/api/contacts").hasAuthority(CRIAR_CONTATO.name())
                         .requestMatchers("/api/contacts/*").hasAuthority(EDITAR_CONTATO.name())
                         .requestMatchers("/api/contacts/*").hasAuthority(REMOVER_CONTATO.name())
+                        // Outras Rotas
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
