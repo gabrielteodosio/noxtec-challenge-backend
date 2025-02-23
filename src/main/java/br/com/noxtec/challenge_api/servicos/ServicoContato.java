@@ -54,9 +54,9 @@ public class ServicoContato {
         )).stream().toList();
     }
 
-    public List<ContatoResponseDTO> listarContatosPorUsusario(int pagina, int tamanho, UUID usuarioId) {
+    public List<ContatoResponseDTO> listarContatosPorUsusario(int pagina, int tamanho, String email) {
         Pageable paginacao = PageRequest.of(pagina, tamanho);
-        Page<Contato> contatos = this.repositorioContato.findContatosByUsuario(paginacao, usuarioId);
+        Page<Contato> contatos = this.repositorioContato.findContatosByUsuario(paginacao, email);
 
         return contatos.map(contato -> new ContatoResponseDTO(
                 contato.getId(), contato.getNome(), contato.getEmail(),

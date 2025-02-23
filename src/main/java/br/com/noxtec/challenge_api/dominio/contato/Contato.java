@@ -52,6 +52,6 @@ public class Contato {
     private LocalDateTime dataHoraEdicao;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id")
+    @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 }

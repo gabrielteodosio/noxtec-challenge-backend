@@ -8,13 +8,16 @@ import br.com.noxtec.challenge_api.servicos.ServicoContato;
 import br.com.noxtec.challenge_api.servicos.ServicoUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/{usuarioId}/contacts")
+@RequestMapping("/api/contacts")
 public class ControladorContato {
 
     @Autowired
@@ -25,16 +28,29 @@ public class ControladorContato {
 
     @GetMapping
     public ResponseEntity<List<ContatoResponseDTO>> listar(@RequestParam(defaultValue = "0", required = false) int pagina,
-                                                           @RequestParam(defaultValue = "10", required = false) int tamanho,
-                                                           @PathVariable("usuarioId") UUID usuarioId) {
-        List<ContatoResponseDTO> contatos = this.servicoContato.listarContatosPorUsusario(pagina, tamanho, usuarioId);
-        return ResponseEntity.ok(contatos);
+                                                           @RequestParam(defaultValue = "10", required = false) int tamanho) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails userDetails) {
+            String userEmail = userDetails.getUsername();
+            List<ContatoResponseDTO> contatos = this.servicoContato.listarContatosPorUsusario(pagina, tamanho, userEmail);
+
+            return ResponseEntity.ok(contatos);
+        }
+
+        return ResponseEntity.badRequest().body(new ArrayList<>());
     }
 
     @PostMapping
-    public ResponseEntity<ContatoResponseDTO> criarContatoViaJSON(@RequestBody ContatoRequestDTO body,
-                                                                  @PathVariable("usuarioId") UUID usuarioId) {
-        Usuario usuarioParente = this.servicoUsuario.buscarUsuarioPorId(usuarioId);
+    public ResponseEntity<ContatoResponseDTO> criarContatoViaJSON(@RequestBody ContatoRequestDTO body) {
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (!(principal instanceof UserDetails userDetails)) {
+            return (ResponseEntity<ContatoResponseDTO>) ResponseEntity.badRequest();
+        }
+
+        Usuario usuarioParente = this.servicoUsuario.buscarUsuarioPorEmail(userDetails.getUsername());
 
         Character favorito = body.favorito() != null ? body.favorito() : 'n';
         Character ativo = body.ativo() != null ? body.ativo() : 's';
@@ -55,9 +71,15 @@ public class ControladorContato {
                                                            @RequestParam(value = "celular", required = false) String celular,
                                                            @RequestParam(value = "telefone", required = false) String telefone,
                                                            @RequestParam(value = "favorito", required = false, defaultValue = "n") Character favorito,
-                                                           @RequestParam(value = "ativo", required = false, defaultValue = "s") Character ativo,
-                                                           @PathVariable("usuarioId") UUID usuarioId) {
-        Usuario usuarioParente = this.servicoUsuario.buscarUsuarioPorId(usuarioId);
+                                                           @RequestParam(value = "ativo", required = false, defaultValue = "s") Character ativo) {
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (!(principal instanceof UserDetails userDetails)) {
+            return (ResponseEntity<ContatoResponseDTO>) ResponseEntity.badRequest();
+        }
+
+        Usuario usuarioParente = this.servicoUsuario.buscarUsuarioPorEmail(userDetails.getUsername());
 
         ContatoRequestDTO contatoRequestDTO = new ContatoRequestDTO(nome, email, celular, telefone, favorito, ativo, usuarioParente);
         Contato novoContato = this.servicoContato.criarContato(contatoRequestDTO);

@@ -3,6 +3,7 @@ package br.com.noxtec.challenge_api.controladores;
 import br.com.noxtec.challenge_api.dominio.usuario.Usuario;
 import br.com.noxtec.challenge_api.dominio.usuario.UsuarioRequestDTO;
 import br.com.noxtec.challenge_api.dominio.usuario.UsuarioResponseDTO;
+import br.com.noxtec.challenge_api.dominio.usuario.UsuarioRole;
 import br.com.noxtec.challenge_api.servicos.ServicoUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +29,9 @@ public class ControladorUsuario {
     @PostMapping
     public ResponseEntity<UsuarioResponseDTO> criarViaJSON(@RequestBody UsuarioRequestDTO body) {
         Usuario novoUsuario = this.servicoUsuario.criarUsuario(body);
+
         UsuarioResponseDTO usuarioResponseDTO = new UsuarioResponseDTO(novoUsuario.getId(),
-                novoUsuario.getNome(), novoUsuario.getEmail(),
+                novoUsuario.getNome(), novoUsuario.getEmail(), novoUsuario.getRole(),
                 novoUsuario.getDataHoraCriacao(), novoUsuario.getDataHoraEdicao());
         return ResponseEntity.status(201).body(usuarioResponseDTO);
     }
@@ -37,12 +39,13 @@ public class ControladorUsuario {
     @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<UsuarioResponseDTO> criarViaForm(@RequestParam("nome") String nome,
                                                            @RequestParam("email") String email,
-                                                           @RequestParam("senha") String senha) {
-        UsuarioRequestDTO usuarioRequestDTO = new UsuarioRequestDTO(nome, email, senha);
+                                                           @RequestParam("senha") String senha,
+                                                           @RequestParam(value = "role", required = false) UsuarioRole role) {
+        UsuarioRequestDTO usuarioRequestDTO = new UsuarioRequestDTO(nome, email, senha, role);
         Usuario novoUsuario = this.servicoUsuario.criarUsuario(usuarioRequestDTO);
 
         UsuarioResponseDTO usuarioResponseDTO = new UsuarioResponseDTO(novoUsuario.getId(),
-                novoUsuario.getNome(), novoUsuario.getEmail(),
+                novoUsuario.getNome(), novoUsuario.getEmail(), novoUsuario.getRole(),
                 novoUsuario.getDataHoraCriacao(), novoUsuario.getDataHoraEdicao());
         return ResponseEntity.status(201).body(usuarioResponseDTO);
     }
@@ -53,7 +56,7 @@ public class ControladorUsuario {
         Usuario usuarioAtualizado = this.servicoUsuario.atualizarUsuario(usuarioId, body);
 
         UsuarioResponseDTO usuarioResponseDTO = new UsuarioResponseDTO(usuarioAtualizado.getId(),
-                usuarioAtualizado.getNome(), usuarioAtualizado.getEmail(),
+                usuarioAtualizado.getNome(), usuarioAtualizado.getEmail(), usuarioAtualizado.getRole(),
                 usuarioAtualizado.getDataHoraCriacao(), usuarioAtualizado.getDataHoraEdicao());
         return ResponseEntity.status(200).body(usuarioResponseDTO);
     }
@@ -62,12 +65,13 @@ public class ControladorUsuario {
     public ResponseEntity<UsuarioResponseDTO> atualizarViaForm(@RequestParam("nome") String nome,
                                                                @RequestParam("email") String email,
                                                                @RequestParam("senha") String senha,
+                                                               @RequestParam("Role") UsuarioRole role,
                                                                @PathVariable("usuarioId") UUID usuarioId) {
-        UsuarioRequestDTO usuarioRequestDTO = new UsuarioRequestDTO(nome, email, senha);
+        UsuarioRequestDTO usuarioRequestDTO = new UsuarioRequestDTO(nome, email, senha, role);
         Usuario usuarioAtualizado = this.servicoUsuario.atualizarUsuario(usuarioId, usuarioRequestDTO);
 
         UsuarioResponseDTO usuarioResponseDTO = new UsuarioResponseDTO(usuarioAtualizado.getId(),
-                usuarioAtualizado.getNome(), usuarioAtualizado.getEmail(),
+                usuarioAtualizado.getNome(), usuarioAtualizado.getEmail(), usuarioAtualizado.getRole(),
                 usuarioAtualizado.getDataHoraCriacao(), usuarioAtualizado.getDataHoraEdicao());
         return ResponseEntity.status(200).body(usuarioResponseDTO);
     }
@@ -77,7 +81,7 @@ public class ControladorUsuario {
         Usuario usuarioExcluido = this.servicoUsuario.apagarUsuarioPorId(usuarioId);
 
         UsuarioResponseDTO usuarioResponseDTO = new UsuarioResponseDTO(usuarioExcluido.getId(),
-                usuarioExcluido.getNome(), usuarioExcluido.getEmail(),
+                usuarioExcluido.getNome(), usuarioExcluido.getEmail(), usuarioExcluido.getRole(),
                 usuarioExcluido.getDataHoraCriacao(), usuarioExcluido.getDataHoraEdicao());
         return ResponseEntity.status(200).body(usuarioResponseDTO);
     }

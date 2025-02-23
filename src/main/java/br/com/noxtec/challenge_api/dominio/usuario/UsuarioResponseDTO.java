@@ -6,6 +6,7 @@ import java.util.UUID;
 public record UsuarioResponseDTO(UUID id,
                                  String nome,
                                  String email,
+                                 UsuarioRole role,
                                  LocalDateTime dataHoraCriacao,
                                  LocalDateTime dataHoraEdicao) {
 }
