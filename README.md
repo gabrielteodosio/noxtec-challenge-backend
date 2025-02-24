@@ -16,7 +16,7 @@ Follow the steps below so you can use this application as intended:
     - [Community Edition](https://www.jetbrains.com/pt-br/idea/download);
   - PostgreSQL Database \[required\]:
     - [Versão 17](https://www.postgresql.org/download/)
-2. Create a database in you Postgres Instance called `noxtec`;
+2. Create a database, in your Postgres Instance, called `noxtec`;
 3. Configure your environment, putting java in your Path Variable and also the Maven. (This step can be skipped if you are using IntelliJ IDEA)
 4. Run the following command to build the project and also clean any early builds: (This step can be skipped if you are using IntelliJ IDEA)
 ```bash
