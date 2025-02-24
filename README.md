@@ -41,3 +41,10 @@ spring.jpa.hibernate.ddl-auto=update
 ```
 
 After running this project you can easily run the [frontend](https://github.com/gabrielteodosio/noxtec-challenge-frontend) application and run everything as intended.
+
+## Testing without the frontend
+
+1. Download [Imsonia](https://insomnia.rest/download)
+2. Import the file;
+
+Now you'll have a collenction of the endpoints so you can test everything withou even running the frontend
