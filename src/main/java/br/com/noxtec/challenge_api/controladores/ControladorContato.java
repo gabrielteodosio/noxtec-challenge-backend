@@ -41,6 +41,27 @@ public class ControladorContato {
         return ResponseEntity.badRequest().body(new ArrayList<>());
     }
 
+    @GetMapping("/{contatoId}")
+    public ResponseEntity<ContatoResponseDTO> buscarUmContato(@PathVariable("contatoId") UUID contatoId) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails userDetails) {
+            String userEmail = userDetails.getUsername();
+            Contato contato =  this.servicoContato.buscarContatoPorId(contatoId, userEmail);
+
+            ContatoResponseDTO contatoResponseDTO = new ContatoResponseDTO(contato.getId(),
+                    contato.getNome(), contato.getEmail(),
+                    contato.getCelular(), contato.getTelefone(),
+                    contato.getFavorito(), contato.getAtivo(),
+                    contato.getDataHoraCriacao(), contato.getDataHoraEdicao());
+
+            return ResponseEntity.ok(contatoResponseDTO);
+        }
+
+        return ResponseEntity.badRequest().body(null);
+    }
+
+
     @PostMapping
     public ResponseEntity<ContatoResponseDTO> criarContatoViaJSON(@RequestBody ContatoRequestDTO body) {
 

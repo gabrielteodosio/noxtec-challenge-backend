@@ -26,6 +26,12 @@ public class ServicoContato {
         return optionalUsuario.orElse(null);
     }
 
+    public Contato buscarContatoPorId(UUID contatoId, String usuarioEmail) {
+        Optional<Contato> optionalUsuario =
+                this.repositorioContato.buscarContatoPorIdPorUsuario(contatoId, usuarioEmail);
+        return optionalUsuario.orElse(null);
+    }
+
     public Contato criarContato(ContatoRequestDTO dados) {
         Contato novoContato = new Contato();
 
