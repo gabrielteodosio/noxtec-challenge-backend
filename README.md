@@ -40,4 +40,4 @@ spring.datasource.password=<senha>
 spring.jpa.hibernate.ddl-auto=update
 ```
 
-After running this project you can easily run the frontend application and run everything as intended.
+After running this project you can easily run the [frontend](https://github.com/gabrielteodosio/noxtec-challenge-frontend) application and run everything as intended.
