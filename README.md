@@ -1,4 +1,4 @@
-# Challenge Backedn
+# Challenge Backend
 
 This project was generated using [Spring Initializr](https://start.spring.io/) using the latest version of Spring Boot, which I think it's 3.4.3.
 
