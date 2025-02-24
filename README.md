@@ -12,9 +12,9 @@ Follow the steps below so you can use this application as intended:
     - [Versão 21](https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html);
   - Maven:
     - [Versão 3.9.9](https://maven.apache.org/download.cgi);
-  - IntelliJ IDEA \[require\]:
+  - IntelliJ IDEA:
     - [Community Edition](https://www.jetbrains.com/pt-br/idea/download);
-  - PostgreSQL Database:
+  - PostgreSQL Database \[required\]:
     - [Versão 17](https://www.postgresql.org/download/)
 2. Create a database in you Postgres Instance called `noxtec`;
 3. Configure your environment, putting java in your Path Variable and also the Maven. (This step can be skipped if you are using IntelliJ IDEA)
